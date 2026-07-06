@@ -78,6 +78,7 @@ function HeroPost({
 
 export default async function Page() {
   const { isEnabled } = draftMode();
+
   const allPosts = await getAllPosts(isEnabled);
   const heroPost = allPosts[0];
   const morePosts = allPosts.slice(1);
@@ -85,6 +86,7 @@ export default async function Page() {
   return (
     <div className="container mx-auto px-5">
       <Intro />
+
       {heroPost && (
         <HeroPost
           title={heroPost.title}
@@ -95,6 +97,7 @@ export default async function Page() {
           excerpt={heroPost.excerpt}
         />
       )}
+
       <MoreStories morePosts={morePosts} />
     </div>
   );
