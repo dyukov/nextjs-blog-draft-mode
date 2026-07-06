@@ -29,7 +29,7 @@ const POST_GRAPHQL_FIELDS = `
 `;
 
 async function fetchGraphQL(query: string, preview = false): Promise<any> {
-  return fetch(
+  const response = await fetch(
     `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`,
     {
       method: "POST",
@@ -44,7 +44,16 @@ async function fetchGraphQL(query: string, preview = false): Promise<any> {
       body: JSON.stringify({ query }),
       next: { tags: ["posts"] },
     },
-  ).then((response) => response.json());
+  );
+  const json = await response.json();
+  if (!response.ok || json.errors) {
+    throw new Error(
+      `Contentful GraphQL request failed (status ${response.status}): ${JSON.stringify(
+        json.errors ?? json,
+      )}`,
+    );
+  }
+  return json;
 }
 
 function extractPost(fetchResponse: any): any {
