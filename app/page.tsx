@@ -76,13 +76,8 @@ function HeroPost({
   );
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const { isEnabled } = draftMode();
+export default async function Page() {
+  const { isEnabled } = await draftMode();
 
   const allPosts = await getAllPosts(isEnabled);
   const heroPost = allPosts[0];
@@ -102,7 +97,6 @@ export default async function Page({
           excerpt={heroPost.excerpt}
         />
       )}
-      <p>{slug}</p>
       <MoreStories morePosts={morePosts} />
     </div>
   );
